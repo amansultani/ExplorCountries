@@ -1,6 +1,6 @@
 ## Explore Countries
 
-Explore Countries is a React Vite application that fetches country information from [restcountries](https://restcountries.com/). The application allows users to search for countries based on various criteria, view a list of countries, and access detailed information for each country.
+Explore Countries is a **React** application that fetches country information from [restcountries](https://restcountries.com/). The application allows users to search for countries based on various criteria, view a list of countries, and access detailed information for each country.
 
 ## Features
 
@@ -8,6 +8,10 @@ Explore Countries is a React Vite application that fetches country information f
 2. **List View**: View a list of countries based on the search criteria.
 3. **Detail View**: Click on a country to see detailed information.
 4. **Sorting**: Sort the list of countries based on different factors such as population, area, etc.
+
+## Technologies Used
+
+- **React Query**: Provides a high-level abstraction for data fetching, enabling a better user experience and ensuring high data availability.
 
 ## Usage
 
