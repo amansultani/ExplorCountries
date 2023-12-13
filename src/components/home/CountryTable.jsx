@@ -13,13 +13,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 
 function createData(country) {
@@ -95,10 +89,10 @@ const headCells = [
     label: "Region",
   },
   {
-    id: "aria",
+    id: "area",
     numeric: true,
     disablePadding: false,
-    label: "Aria",
+    label: "Area",
   },
   {
     id: "population",
@@ -109,14 +103,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -136,7 +123,9 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+              <Typography variant="subtitle1" fontWeight="bold">
+                {headCell.label}
+              </Typography>
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -187,12 +176,12 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
+          sx={{ flex: "1 1 100%", textAlign: "center" }}
+          variant="h5"
           id="tableTitle"
           component="div"
         >
-          Countries
+          List of Countries
         </Typography>
       )}
     </Toolbar>
@@ -203,12 +192,21 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
 export default function CountryTable({ countries }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("area");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const rows = countries.map(createData);
@@ -228,25 +226,6 @@ export default function CountryTable({ countries }) {
     setSelected([]);
   };
 
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -254,10 +233,6 @@ export default function CountryTable({ countries }) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
@@ -283,7 +258,7 @@ export default function CountryTable({ countries }) {
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size="medium"
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -295,41 +270,26 @@ export default function CountryTable({ countries }) {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.name}
-                    </TableCell>
+                  <StyledTableRow hover key={row.id} sx={{ cursor: "pointer" }}>
+                    <TableCell id={labelId}>{row.name}</TableCell>
                     <TableCell align="left">{row.official}</TableCell>
                     <TableCell align="left">{row.cca3}</TableCell>
                     <TableCell align="left">{row.capital}</TableCell>
                     <TableCell align="left">{row.region}</TableCell>
                     <TableCell align="right">{row.area}</TableCell>
-                    <TableCell align="right">{row.population}</TableCell>
-                  </TableRow>
+                    <TableCell align="right">
+                      {row.population.toLocaleString()}
+                    </TableCell>
+                  </StyledTableRow>
                 );
               })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: 53 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
@@ -348,10 +308,6 @@ export default function CountryTable({ countries }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 }

@@ -7,8 +7,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
+import { useSubmit } from "react-router-dom";
 
 export default function Country({ country }) {
+  const submit = useSubmit();
   const aspectRatio = 16 / 9;
   const fixedHeight = 160;
   const fixedWidth = aspectRatio * fixedHeight;
@@ -35,7 +37,20 @@ export default function Country({ country }) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button>Learn More</Button>
+          <Button
+            onClick={() => {
+              submit(
+                { data: country },
+                {
+                  method: "post",
+                  encType: "application/json",
+                  action: `/countries/${country.name.common}`,
+                }
+              );
+            }}
+          >
+            Learn More
+          </Button>
         </CardActions>
       </Card>
     </Grid>

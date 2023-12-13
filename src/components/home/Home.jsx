@@ -1,15 +1,24 @@
 import SearchBar from "./Searchbar";
 import { useQuery } from "@tanstack/react-query";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
+
 import { fetchCountries } from "../util/http";
 import { useState } from "react";
 import LoadingIndicator1 from "../UI/LoadingIndicator1";
 import Error from "../UI/error";
-import Country from "./Country";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import GridViewIcon from "@mui/icons-material/GridView";
+import TocIcon from "@mui/icons-material/Toc";
+import Grid from "@mui/material/Grid";
 import CountryTable from "./CountryTable";
+import CountryNotFound from "./CountryNotFound";
+import CountryList from "./CountryList";
 
 const Home = () => {
+  const [tableView, setTableView] = useState(false);
+  const changeViewHandler = () => {
+    setTableView(!tableView);
+  };
   const [searchContent, setSearchContent] = useState({
     term: "region",
     value: "Europe",
@@ -30,26 +39,40 @@ const Home = () => {
     content = <Error error={error} />;
   }
   if (!isError && !isPending) {
-    content = <CountryTable countries={data} />;
-    // content = (
-    //   <Grid
-    //     container
-    //     spacing={4}
-    //     marginTop={3}
-    //     key={"countries"}
-    //     justifyContent="space-around"
-    //   >
-    //     {data.map((country) => {
-    //       return <Country key={country.name.official} country={country} />;
-    //     })}
-    //   </Grid>
-    // );
+    if (data.status === 404) content = <CountryNotFound />;
+    else {
+      content = (
+        <main>
+          <Grid container justifyContent="center" sx={{ margin: 3 }}>
+            <Stack direction="row" spacing={2}>
+              <Button
+                variant="contained"
+                startIcon={<TocIcon />}
+                disabled={tableView}
+                onClick={changeViewHandler}
+              >
+                Table View
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<GridViewIcon />}
+                disabled={!tableView}
+                onClick={changeViewHandler}
+              >
+                Grid View
+              </Button>
+            </Stack>
+          </Grid>
+          {tableView && <CountryTable countries={data} />}
+          {!tableView && <CountryList countries={data} />}
+        </main>
+      );
+    }
   }
 
   return (
     <>
       <SearchBar searchData={searchDataHandler} />
-
       {content}
     </>
   );

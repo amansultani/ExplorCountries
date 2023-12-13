@@ -7,7 +7,9 @@ export async function fetchCountries({ signal, content }) {
     let url = `https://restcountries.com/v3.1/${term}/${value}`;
 
     const response = await fetch(url, { signal: signal });
-
+    if (!response.ok && response.status === 404) {
+      return await response.json();
+    }
     if (!response.ok) {
       const error = new Error("An error occurred while fetching the Result");
       error.code = response.status;
