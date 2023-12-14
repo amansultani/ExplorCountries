@@ -21,7 +21,7 @@ function createData(country) {
     id: country.name.common,
     name: country.name.common,
     official: country.name.official,
-    cca3: country.cca3,
+    cca3: country.cca2.toLowerCase(),
     capital: country.capital,
     region: country.region,
     area: country.area,
@@ -71,22 +71,22 @@ const headCells = [
     label: "Official Name",
   },
   {
-    id: "cca3",
+    id: "flag",
     numeric: false,
     disablePadding: false,
-    label: "Country Code",
+    label: "Flag",
   },
   {
     id: "capital",
     numeric: false,
     disablePadding: false,
-    label: "Capital",
+    label: "Capital City",
   },
   {
     id: "region",
     numeric: false,
     disablePadding: false,
-    label: "Region",
+    label: "Continent",
   },
   {
     id: "area",
@@ -276,10 +276,26 @@ export default function CountryTable({ countries }) {
                   <StyledTableRow hover key={row.id} sx={{ cursor: "pointer" }}>
                     <TableCell id={labelId}>{row.name}</TableCell>
                     <TableCell align="left">{row.official}</TableCell>
-                    <TableCell align="left">{row.cca3}</TableCell>
+                    <TableCell align="left">
+                      <img
+                        loading="lazy"
+                        width="20"
+                        srcSet={`https://flagcdn.com/w40/${row.cca3}.png 2x`}
+                        src={`https://flagcdn.com/w20/${row.cca3}.png`}
+                        alt=""
+                      />
+                    </TableCell>
                     <TableCell align="left">{row.capital}</TableCell>
                     <TableCell align="left">{row.region}</TableCell>
-                    <TableCell align="right">{row.area}</TableCell>
+                    <TableCell align="right">
+                      {row.area}
+                      {"  mi"}
+                      <sup
+                        style={{ fontSize: "smaller", verticalAlign: "top" }}
+                      >
+                        2
+                      </sup>{" "}
+                    </TableCell>
                     <TableCell align="right">
                       {row.population.toLocaleString()}
                     </TableCell>

@@ -21,7 +21,24 @@ export default function Country({ country }) {
     .toLocaleString(DateTime.TIME_SIMPLE);
 
   return (
-    <Grid item>
+    <Grid
+      sx={{
+        "&:hover": {
+          cursor: "pointer",
+        },
+      }}
+      item
+      onClick={() => {
+        submit(
+          { data: country },
+          {
+            method: "post",
+            encType: "application/json",
+            action: `/countries/${country.name.common}`,
+          }
+        );
+      }}
+    >
       <Card sx={{ maxWidth: 300 }}>
         <CardMedia
           sx={{ width: fixedWidth, height: fixedHeight }}
@@ -33,7 +50,23 @@ export default function Country({ country }) {
             {country.name.official}
           </Typography>
           <Typography variant="subtitle1" color="text.primary">
-            Time: {now}
+            <b>Capital: </b>
+            {country.capital}
+          </Typography>
+          <Typography variant="subtitle1" color="text.primary">
+            <b>Contetent: </b>
+            {country.region}
+          </Typography>
+          <Typography variant="subtitle1" color="text.primary">
+            <b>Area: </b>
+            {country.area} {"  mi"}
+            <sup style={{ fontSize: "smaller", verticalAlign: "top" }}>
+              2
+            </sup>{" "}
+          </Typography>
+          <Typography variant="subtitle1" color="text.primary">
+            <b>Population: </b>
+            {country.population.toLocaleString()}
           </Typography>
         </CardContent>
         <CardActions>
