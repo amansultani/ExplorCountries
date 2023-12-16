@@ -1,4 +1,3 @@
-import SearchBar from "./Searchbar";
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchCountries } from "../util/http";
@@ -14,18 +13,18 @@ import CountryTable from "./CountryTable";
 import CountryNotFound from "./CountryNotFound";
 import CountryList from "./CountryList";
 
-const Home = () => {
+const Countries = ({ searchContent }) => {
   const [tableView, setTableView] = useState(false);
   const changeViewHandler = () => {
     setTableView(!tableView);
   };
-  const [searchContent, setSearchContent] = useState({
-    term: "region",
-    value: "Europe",
-  });
-  const searchDataHandler = (searchData) => {
-    setSearchContent({ term: searchData.term, value: searchData.criteria });
-  };
+  // const [searchContent, setSearchContent] = useState({
+  //   term: term,
+  //   value: value,
+  // });
+  // const searchDataHandler = (searchData) => {
+  //   setSearchContent({ term: searchData.term, value: searchData.criteria });
+  // };
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["countries", { search: searchContent }],
@@ -70,12 +69,7 @@ const Home = () => {
     }
   }
 
-  return (
-    <>
-      <SearchBar searchData={searchDataHandler} />
-      {content}
-    </>
-  );
+  return <>{content}</>;
 };
 
-export default Home;
+export default Countries;

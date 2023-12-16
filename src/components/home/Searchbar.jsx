@@ -6,17 +6,17 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function SearchBar({ searchData }) {
+export default function SearchBar() {
   const searchTerm = useRef();
   const searchCriteria = useRef();
+  const navigate = useNavigate();
 
   const submitHandler = () => {
-    const data = {
-      term: searchTerm.current.value,
-      criteria: searchCriteria.current.value,
-    };
-    searchData(data);
+    const term = searchTerm.current.value;
+    const criteria = searchCriteria.current.value;
+    navigate(`/countries/${term}/${criteria}`);
   };
 
   return (

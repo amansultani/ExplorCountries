@@ -6,6 +6,7 @@ import Header from "../components/UI/Header";
 import Footer from "../components/UI/Footer";
 
 import { Outlet } from "react-router-dom";
+import SearchBar from "../components/home/Searchbar";
 
 export default function RootPage() {
   return (
@@ -13,6 +14,7 @@ export default function RootPage() {
       <CssBaseline />
       <Container maxWidth="lg">
         <Header />
+        <SearchBar />
         <Outlet />
       </Container>
       <Footer />

@@ -9,6 +9,7 @@ import HomePage from "./pages/Home";
 import CountryDetail, {
   action as CountryDetailAction,
 } from "./pages/CountryDetail";
+import CountriesPage from "./pages/Countries";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: ":term/:value",
+        element: <CountriesPage />,
       },
       {
         path: ":countryName",
