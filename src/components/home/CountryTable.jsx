@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
+import { useSubmit } from "react-router-dom";
 
 function createData(country) {
   return {
@@ -26,6 +27,7 @@ function createData(country) {
     region: country.region,
     area: country.area,
     population: country.population,
+    country: country,
   };
 }
 
@@ -203,6 +205,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function CountryTable({ countries }) {
+  const submit = useSubmit();
+
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("area");
   const [selected, setSelected] = React.useState([]);
@@ -237,7 +241,6 @@ export default function CountryTable({ countries }) {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -270,11 +273,23 @@ export default function CountryTable({ countries }) {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
-
                 return (
-                  <StyledTableRow hover key={row.id} sx={{ cursor: "pointer" }}>
-                    <TableCell id={labelId}>{row.name}</TableCell>
+                  <StyledTableRow
+                    hover
+                    key={row.id}
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      submit(
+                        { data: row.country },
+                        {
+                          method: "post",
+                          encType: "application/json",
+                          action: `/countries/${row.name}`,
+                        }
+                      );
+                    }}
+                  >
+                    <TableCell>{row.name}</TableCell>
                     <TableCell align="left">{row.official}</TableCell>
                     <TableCell align="left">
                       <img
