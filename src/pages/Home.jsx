@@ -6,7 +6,7 @@ export default function HomePage() {
     <main>
       <Container maxWidth="lg" style={{ marginTop: "2rem" }}>
         <Paper elevation={3} style={{ padding: "2rem" }}>
-          <Typography variant="h3" component="h1" gutterBottom>
+          <Typography variant="h4" component="h1" gutterBottom>
             Welcome to Explore Countries
           </Typography>
           <Typography variant="body1" paragraph>

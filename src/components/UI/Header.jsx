@@ -9,7 +9,7 @@ function Header() {
   return (
     <React.Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Button size="small">Subscribe</Button>
+        <Button size="small" onClick={() => window.open("https://restcountries.com", "_blank")}>Rest Countries API</Button>
         <Typography
           component="h2"
           variant="h5"
@@ -20,11 +20,9 @@ function Header() {
         >
           EXPLORE COUNTRIES
         </Typography>
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
-        <Button variant="outlined" size="small">
-          Sign up
+
+        <Button variant="outlined" size="small" onClick={() => window.open("https://github.com/amansultani/ExplorCountries", "_blank")} >
+          Github Reopsitory
         </Button>
       </Toolbar>
       <Toolbar
