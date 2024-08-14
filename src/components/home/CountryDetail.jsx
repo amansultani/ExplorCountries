@@ -133,7 +133,7 @@ const CountryDetail = ({ country }) => {
 
         <CardActions>
           <Button size="small" variant="outlined" onClick={handleGoBack}>
-            Go Back
+            Back
           </Button>
         </CardActions>
       </main>
